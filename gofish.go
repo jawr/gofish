@@ -15,25 +15,31 @@ import (
 func Decrypt(key string, message string) string {
     ckey := C.CString(key)
     defer C.free(unsafe.Pointer(ckey))
+
     cstr := C.CString(message)
     defer C.free(unsafe.Pointer(cstr))
-    cdest := C.CString("")
-    defer C.free(unsafe.Pointer(cdest))
+
+    buf := make([]byte, 1000)
+
     clen := C.int(len(message))
-    C.decrypt_string(ckey, cstr, cdest, clen)
-    ret := C.GoString(cdest)
-    return ret
+
+    C.decrypt_string(ckey, cstr, (*C.char)(unsafe.Pointer(&buf[0])), clen)
+
+    return string(buf)
 } 
 
 func Encrypt(key string, message string) string {
     ckey := C.CString(key)
     defer C.free(unsafe.Pointer(ckey))
+
     cstr := C.CString(message)
     defer C.free(unsafe.Pointer(cstr))
-    cdest := C.CString("")
-    defer C.free(unsafe.Pointer(cdest))
+
+    buf := make([]byte, 1000)
+
     clen := C.int(len(message))
-    C.encrypt_string(ckey, cstr, cdest, clen)
-    ret := C.GoString(cdest)
-    return ret
+
+    C.encrypt_string(ckey, cstr, (*C.char)(unsafe.Pointer(&buf[0])), clen)
+
+    return "+OK " + string(buf)
 }
