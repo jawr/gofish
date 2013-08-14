@@ -333,7 +333,7 @@ int encrypt_string(const char *key, const char *str, char *dest, int len)
     *d = 0;
     memset(s, 0, len + 9);  // blast temporary buffer
     free(s);
-    return 1;
+    return strlen(dest);
 }
 
 int decrypt_string(const char *key, const char *str, char *dest, int len)
@@ -366,5 +366,5 @@ int decrypt_string(const char *key, const char *str, char *dest, int len)
 
     *d = 0;
     free(s);
-    return 1;
+    return strlen(dest);
 }

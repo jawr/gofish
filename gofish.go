@@ -9,6 +9,7 @@ extern int encrypt_string(const char *key, const char *str, char *dest, int len)
 */
 import "C"
 import (
+    "fmt"
     "unsafe"
 )
 
@@ -23,7 +24,9 @@ func Decrypt(key string, message string) string {
 
     clen := C.int(len(message))
 
-    C.decrypt_string(ckey, cstr, (*C.char)(unsafe.Pointer(&buf[0])), clen)
+    len := C.decrypt_string(ckey, cstr, (*C.char)(unsafe.Pointer(&buf[0])), clen)
+
+    buf = buf[0:int(len)]
 
     return string(buf)
 } 
@@ -39,7 +42,8 @@ func Encrypt(key string, message string) string {
 
     clen := C.int(len(message))
 
-    C.encrypt_string(ckey, cstr, (*C.char)(unsafe.Pointer(&buf[0])), clen)
+    len := C.encrypt_string(ckey, cstr, (*C.char)(unsafe.Pointer(&buf[0])), clen)
+    buf = buf[0:int(len)]
 
     return "+OK " + string(buf)
 }
