@@ -8,10 +8,7 @@ extern int encrypt_string(const char *key, const char *str, char *dest, int len)
 
 */
 import "C"
-import (
-    "fmt"
-    "unsafe"
-)
+import "unsafe"
 
 func Decrypt(key string, message string) string {
     ckey := C.CString(key)
